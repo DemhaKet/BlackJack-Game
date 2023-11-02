@@ -1,0 +1,70 @@
+*{
+    padding-top: 0px;
+    margin-top: 0px;
+}
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;  
+    background-image: url(blackJack_background.jpg);
+    color: white; 
+}
+
+h1{
+    margin-top: 20px;
+    font-size: 45px;
+}
+
+h2{
+    font-size: 25px;
+    display: inline;
+    padding: 10px;
+}
+
+p{
+    font-size: 25px;
+    display: inline;
+    font-weight: bolder;
+}
+
+#dealer-cards img,
+#player-cards img{
+    height: 200px; 
+    width: 150px; 
+    margin: 20px 7px 15px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.844);
+    transition: 0.3s;
+}
+
+
+#player-cards img:hover,
+#dealer-cards img:hover{
+    transform: scale(1.02);
+}
+
+button{
+    background-color: #ff330f; 
+    border: 2px solid #ffd700; 
+    color: white; 
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 10px; 
+    font-size: 16px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: 0.3s;
+    width: 150px;
+}
+
+.player-choice button{
+    width: 100px;
+    margin: 10px 5px 0px;
+}
+
+button:hover{
+    background-color: #ff4500; 
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.8);
+    transform: translateY(-5px);
+}
