@@ -2,6 +2,7 @@
     padding-top: 0px;
     margin-top: 0px;
 }
+
 body{
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;  
@@ -12,18 +13,21 @@ body{
 h1{
     margin-top: 20px;
     font-size: 45px;
+    -webkit-text-stroke: 1.5px #000; 
 }
 
 h2{
     font-size: 25px;
     display: inline;
     padding: 10px;
+    -webkit-text-stroke: 1px #000; 
 }
 
 p{
     font-size: 25px;
     display: inline;
-    font-weight: bolder;
+    font-weight: 700;
+    -webkit-text-stroke: 1px #000; 
 }
 
 #dealer-cards img,
