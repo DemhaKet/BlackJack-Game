@@ -232,18 +232,20 @@ function initGame() {
             drawCard(dealerHand)
             playerScore = scoreCount(playerHand)
             dealerScore = scoreCount(dealerHand)
-            setTimeout(1000)    
         }
         // console.log('this is playerscore', playerScore)
         // console.log('this is dealerscore', dealerScore)
         displayCardInit()
     
         if (playerScore === 21) {
-            if (dealerScore !== 21) {
-                alert("BlackJack! You Win!")
-            } else {
-                alert("Dealer and Player have BlackJacks. It's a Tie.")
-            }
+            setTimeout(() => {
+                if (dealerScore !== 21) {
+                    alert("BlackJack! You Win!")
+                } else {
+                    alert("Dealer and Player have BlackJacks. It's a Tie.")
+                }
+            }, 1000)
+            displayCard()
         }
     
     }, 500)
