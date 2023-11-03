@@ -73,15 +73,19 @@ function generateDeck(deck) {
 function drawCard(personHand) {
     let totalCards = deck1.length + deck2.length + deck3.length + 
     deck4.length + deck5.length + deck6.length
-    // Here the randomInt function is called twice. The first time to choose 
+    
+    /* Here the randomInt function is called twice. The first time to randomly choose and select the key (deck number) of the Map. 
+    The second is to select a random card from the array, that is, in itself the value of the previously randomly selected key */
     const getRandomKey = allCards.get(randomInt(allCards.size))
     const getRandomValue = randomInt(getRandomKey.length)
     const randomCard = getRandomKey[getRandomValue]
     
     // console.log(randomCard.suit, randomCard.card, randomCard.suit)
-    
+
+    // This allows to remove the randomly selected card of the the deck
     getRandomKey.splice(getRandomValue, 1)
-    
+
+    // This pushes the randomly selected card to the selected person's hand
     personHand.push(randomCard)
 
     /* This part was made so that there never is an instance where an undefined card gets drawn. 
