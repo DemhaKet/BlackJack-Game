@@ -95,6 +95,7 @@ function drawCard(personHand) {
 
 function scoreCount(personHand) {
     let score = 0
+    // the aceCount variable will allow for the total of aces in a given person's hand to help dynamically attribute the value of the ace
     let aceCount = 0
     for (const card of personHand) {
         if (card.card === 'King' || card.card === 'Queen' || 
@@ -103,6 +104,7 @@ function scoreCount(personHand) {
                 
                 // console.log('added 10')
         } else if (card.card === 'Ace') {
+            // Any time an ace is encountered in a person's hand, it will increment by 1 the value of aceCount
             aceCount++
             score += 11
             
@@ -112,6 +114,8 @@ function scoreCount(personHand) {
         }    
     }
 
+    /* As aces are initially valued at 11, to make the gameplay more realistic, and allow for a dynamic attribution of the ace value of either 11 or 1, 
+    this condition substracts (10 * the number of aces in the person's hand) to effectively change the value of the ace from 11 to 1 if the score goes above 21 */ 
     if (aceCount > 0 && score > 21) {
         score -= 10*aceCount
     }
