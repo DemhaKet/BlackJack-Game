@@ -1,3 +1,5 @@
+// I named the individual cards in the cards folder matching the name they are created with when calling the generateDeck(deck) function to be able to respectively display them on screen
+
 let deck1 = []
 let deck2 = []
 let deck3 = []
@@ -38,6 +40,7 @@ const dealerHandHtml = document.getElementById('dealer-cards')
 const playerScoreHtml = document.getElementById('player-score')
 const dealerScoreHtml = document.getElementById('dealer-score')
 
+// This ensure that the game environment is set as soon as the window loads by calling the reset() function
 window.onload = () => {
     reset()
 }
@@ -70,7 +73,7 @@ function generateDeck(deck) {
 function drawCard(personHand) {
     let totalCards = deck1.length + deck2.length + deck3.length + 
     deck4.length + deck5.length + deck6.length
-    
+    // Here the randomInt function is called twice. The first time to choose 
     const getRandomKey = allCards.get(randomInt(allCards.size))
     const getRandomValue = randomInt(getRandomKey.length)
     const randomCard = getRandomKey[getRandomValue]
@@ -80,7 +83,9 @@ function drawCard(personHand) {
     getRandomKey.splice(getRandomValue, 1)
     
     personHand.push(randomCard)
-    
+
+    /* This part was made so that there never is an instance where an undefined card gets drawn. 
+    If there are only less than 52 cards remaining amongst the 6 deck or if any deck only has less than 10 cards left, the decksReset() function will be called */
     if (totalCards < 52 || getRandomKey.length < 10) {
         decksReset()
     }
@@ -114,7 +119,7 @@ function scoreCount(personHand) {
     return score
 }
 
-
+// This function is made to display all cards and the scores, including the hidden dealer cards. This is called when the game ends, meaning when the player or dealer loses or if there is a tie
 function displayCard() {
     playerHandHtml.innerHTML = ''
     dealerHandHtml.innerHTML = ''
@@ -134,9 +139,12 @@ function displayCard() {
     dealerScoreHtml.innerHTML = dealerScore
 }
 
+/* This function is made to display only the player's cards and score and only one of the dealer's cards and it's score. This is to ensure that even when a player chooses to hit, the dealer's cards dont get displayed. 
+This is made to ensure a game process is as close to reality as possible */
 function displayCardInit() {
     playerHandHtml.innerHTML = ''
     dealerHandHtml.innerHTML = ''
+    
     for (let i = 0; i < playerHand.length; i++) {
         let cardImg = document.createElement('img')
         cardImg.src = `cards/${playerHand[i].card}_of_${playerHand[i].suit}.png`
@@ -164,10 +172,12 @@ function displayCardInit() {
 
 }
 
+// Function to generate a random number using a max parameter to be called in the drawCard() function
 function randomInt(max) {
     return Math.floor(Math.random() * max)
 }
 
+// This function is meant to be called by the drawCard() function. It effectively repopulates all the decks in the Map
 function decksReset() {
     for (let i = 0; i < 6; i++) {
         const deck = allCards.get(i);
@@ -176,6 +186,7 @@ function decksReset() {
     }
 }
 
+// Resets all to their initial values and displays two face down cards for both the player and the dealer as to simulate an unknown hand
 function reset() {
     playerHand = []
     dealerHand = []
@@ -186,12 +197,14 @@ function reset() {
     dealerHandHtml.innerHTML = ''
     dealerScoreHtml.innerHTML = 0
 
+    // Displays back of cards to the dealer
     let backCardImg1 = document.createElement('img')
     backCardImg1.src = `cards/back.png`
     let backCardImg2 = document.createElement('img')
     backCardImg2.src = `cards/back.png`
     dealerHandHtml.append(backCardImg1, backCardImg2)
-    
+
+    // Displays back of cards to the player
     let backCardImg3 = document.createElement('img')
     backCardImg3.src = `cards/back.png`
     let backCardImg4 = document.createElement('img')
@@ -199,9 +212,12 @@ function reset() {
     playerHandHtml.append(backCardImg3, backCardImg4)
 }
 
+/* This function initializes the game by reseting everything at first. 
+The setTimeout() functions are used to make the user experience is more enjoyable and closer to what a real blackjack game experience might feel like */
 function initGame() {
     reset()
-    
+
+    // This populates the player's and dealer's hands while taking care of some edge cases as the player having a blackjack, or the player and the dealer having a blackjack 
     setTimeout(() => {
         for (let i = 0; i < 2; i++) {
             drawCard(playerHand)
@@ -226,6 +242,7 @@ function initGame() {
     
 }
 
+// This function when called draws a card for the player and checks for different conditions
 function hit() {
     drawCard(playerHand)
     playerScore = scoreCount(playerHand)
@@ -237,6 +254,7 @@ function hit() {
     }
 }
 
+// This allows the player to stand on his current score while the dealer continues to draw cards until specific conditions are met. This time all cards will be displayed, uncluding all of the dealer's cards
 function stand() {
     setTimeout(() => {
         while (dealerScore < 17) {
@@ -281,6 +299,7 @@ function stand() {
     }, 5000)
 }
 
+// This function is called when specific conditions are met either when hitting or standing. This function call signifies the end of the current hand as the reset() function is called.
 function checkScore() {
     setTimeout(() => {
         if (playerScore > 21) {
