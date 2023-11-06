@@ -1,4 +1,5 @@
 // I named the individual cards in the cards folder matching the name they are created with when calling the generateDeck(deck) function to be able to respectively display them on screen
+// The win and tie variables and the afterGameMoney() function are called from the second script file to handle the money aspect of the game
 
 let deck1 = []
 let deck2 = []
@@ -233,15 +234,15 @@ function initGame() {
             playerScore = scoreCount(playerHand)
             dealerScore = scoreCount(dealerHand)
         }
-        // console.log('this is playerscore', playerScore)
-        // console.log('this is dealerscore', dealerScore)
         displayCardInit()
     
         if (playerScore === 21) {
             setTimeout(() => {
                 if (dealerScore !== 21) {
-                    alert("BlackJack! You Win!")
+                    checkScore()
                 } else {
+                    tie = true 
+                    afterGameMoney()
                     alert("Dealer and Player have BlackJacks. It's a Tie.")
                 }
             }, 1000)
@@ -254,89 +255,123 @@ function initGame() {
 
 // This function when called draws a card for the player and checks for different conditions
 function hit() {
-    drawCard(playerHand)
-    playerScore = scoreCount(playerHand)
-    if (playerScore <= 21) {
-        displayCardInit()
-    } 
-    if (playerScore > 21) {
-        checkScore()
+    // The first if statement is added to only allow the player to call the hit() function after a new game has been started
+    if (playerHand == []) {
+        alert('Start a new game first')
+    } else {
+        drawCard(playerHand)
+        playerScore = scoreCount(playerHand)
+        if (playerScore <= 21) { // The player didn't bust so shouldn't be able to see the second dealer's card
+            displayCardInit()
+        } 
+        if (playerScore > 21) { // Player busts ==> call checkscore() for outcome
+            checkScore()
+        }
     }
 }
 
 // This allows the player to stand on his current score while the dealer continues to draw cards until specific conditions are met. This time all cards will be displayed, uncluding all of the dealer's cards
 function stand() {
-    setTimeout(() => {
-        while (dealerScore < 17) {
-            drawCard(dealerHand)
-            dealerScore = scoreCount(dealerHand)
-            displayCard()
-            if (dealerScore > 21) {
-                break
-            } else if (dealerScore < 21 && dealerScore >= 17){
-                break
+    // The first if statement serves the same purpose as in the hit() function
+    if (playerHand == []) {
+        alert('Start a new game first')
+    } else {
+        setTimeout(() => {
+            while (dealerScore < 17) { // Dealer draws cards until he gets a score higher or equal to 17
+                drawCard(dealerHand)
+                dealerScore = scoreCount(dealerHand)
+                displayCard()
+                if (dealerScore > 21) { // Dealer busts ==> call dislayCard() ==> call reset()
+                    break
+                } else if (dealerScore < 21 && dealerScore >= 17){ // Dealer has score between 21 excluded (score = 21 is another condition) and 17 included
+                    break
+                }
             }
-        }
-    }, 500)
-    displayCard()
-    
-    
-    setTimeout(() => {
-        if (playerScore !== 21 && dealerScore === 21) {
-            // displayCard()
-            alert('Dealer has a BlackJack! You Lose!')
-        }
-    
-        if (dealerScore > 21) {
-            alert(`Dealer Bust\nDealer: ${dealerScore} \nPlayer: ${playerScore}\nYou Win!`)
-        }
-
-        if (playerScore < 22 && dealerScore < 22) {
-            if (playerScore > dealerScore) {
-                alert(`Dealer: ${dealerScore} \nPlayer: ${playerScore}\nYou Win`)
-            } else if (playerScore === dealerScore) {
-                alert(`Dealer: ${dealerScore} \nPlayer: ${playerScore}\nIt's a Tie!`)
-            } else if (playerScore < dealerScore) {
-                alert(`Dealer: ${dealerScore} \nPlayer: ${playerScore}\nYou Lose!`)
-            } else {
-                checkScore()
+        }, 500)
+        displayCard()
+        
+        
+        setTimeout(() => {
+            if (playerScore !== 21 && dealerScore === 21) { // Dealer blackjack player loses
+                win = false
+                tie = false
+                afterGameMoney()
+                alert('Dealer has a BlackJack! You Lose!')
             }
-        }
-    }, 1500)
+        
+            if (dealerScore > 21) { // Dealer busts player wins
+                win = true 
+                tie = false
+                afterGameMoney()
+                alert(`Dealer Bust\nDealer: ${dealerScore} \nPlayer: ${playerScore}\nYou Win!`)
+            }
     
-    setTimeout(() => {
-        reset()
-    }, 5000)
+            if (playerScore < 22 && dealerScore < 22) {
+                if (playerScore > dealerScore) { // Player better score player wins
+                    win = true
+                    tie = false
+                    afterGameMoney()
+                    alert(`Dealer: ${dealerScore} \nPlayer: ${playerScore}\nYou Win`)
+                } else if (playerScore === dealerScore) { // Player and dealer same score tie
+                    tie = true
+                    win = false
+                    afterGameMoney()
+                    alert(`Dealer: ${dealerScore} \nPlayer: ${playerScore}\nIt's a Tie!`)
+                } else if (playerScore < dealerScore) { // Dealer better score players loses
+                    win = false
+                    tie = false
+                    afterGameMoney()
+                    alert(`Dealer: ${dealerScore} \nPlayer: ${playerScore}\nYou Lose!`)
+                } else { // If any other scenario is encountered call checkscore()
+                    checkScore()
+                }
+            }
+        }, 1500)
+        
+        setTimeout(() => {
+            reset()
+        }, 4000)
+    }
 }
 
-// This function is called when specific conditions are met either when hitting or standing. This function call signifies the end of the current hand as the reset() function is called.
+// This function is called when specific conditions are met either when hitting or standing to check for the result of the current game. This function call signifies the end of the current hand as the reset() function is called.
 function checkScore() {
     setTimeout(() => {
-        if (playerScore > 21) {
+        if (playerScore > 21) { // Player busts and so loses
             displayCard()
+            win = false
+            tie = false
+            afterGameMoney()
             alert('Busted! You Lose.')
             while (dealerScore < 17) {
                 drawCard(dealerHand)
                 dealerScore = scoreCount(dealerHand)
-            }
+            } // The dealer keeps on drawing cards to mimic the realistic behavior of a real life blackjack dealer
             alert(`Dealer: ${dealerScore} \nPlayer:${playerScore}`)
-            // handReset()
     
         } else if (playerScore < 22 && dealerScore < 17) {
             drawCard(dealerHand)
             dealerScore = scoreCount(dealerHand)
-            if (dealerScore > 21) {
+            if (dealerScore > 21) { // Dealer busts player wins
                 displayCard()
+                win = true
+                tie = false
+                afterGameMoney()
                 alert(`Dealer: ${dealerScore} \nPlayer: ${playerScore}\nDealer Bust! You Win!`)
-                // handReset()
             } 
     
-        } else if (playerScore !== 21 && dealerScore === 21) {
+        } else if (playerScore !== 21 && dealerScore === 21) { // Dealer 21 player loses
             displayCard()
+            win = false
+            tie = false
+            afterGameMoney()
             alert('Dealer has a BlaCkJack! You Lose!')
     
-        } else if (playerScore === 21) {
+        } else if (playerScore === 21) { // Player 21 player wins
             displayCard()
+            win = true
+            tie = false
+            afterGameMoney()
             alert(`You have a BlackJack!\nDealer: ${dealerScore} \nPlayer: ${playerScore}\nYou Win!`)
         }
     }, 500)
