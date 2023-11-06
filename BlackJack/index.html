@@ -8,29 +8,52 @@
     </head>
     <body>
         <h1>♥️♣️Welcome to BlackJack♠️♦️</h1>
-        <div id="dealer-cards"></div>
-        <h2>Dealer: <span id="dealer-sum"></span></h2>
-        <p id="dealer-score"></p>
-
-        <div class="score">
-            <h2>Player: <span id="player-sum"></span></h2>
-            <p id="player-score"></p>
+        <div class="main">
+            
+            <div class="section2">
+                <div id="dealer-cards"></div>
+                <h2>Dealer: <span id="dealer-sum"></span></h2>
+                <p id="dealer-score"></p>
+                
+                <div class="score">
+                    <h2>Player: <span id="player-sum"></span></h2>
+                    <p id="player-score"></p>
+                </div>
+                
+                <div class="img-container">
+                    <div id="player-cards"></div>
+                </div>
+                
+                <div>
+                    <button onclick="initGame()" id="startGame">Start Game</button>
+                </div>
+                
+                <div class="player-choice">
+                    <button onclick="hit()" id="startGame">Hit</button>
+                    <button onclick="stand()" id="startGame">Stand</button>
+                </div>
+            </div>
+            
+            <div class="section1">
+                <h2 class="bet-h2" id="current-balance">Current Balance: $0</h2> 
+                <div id="player-money">
+                        <label class="pmoney-label" for="depositAmount">Deposit Money</label> <br>
+                        <input class="pmoney-input" type="number" id="depositAmount" min="0" step="5"><br>
+                        <button class="pmoney-button" type="button" id="deposit-button" onclick="depositMoney()">Deposit</button>
+                </div>
+                <div id="bet">
+                    <!-- <h2 class="bet-h2" id="bet-text">Place your bets</h2>  -->
+                    <h2 class="bet-h2" id="bet-total">Bet: $0</h2> 
+                    <button id="5" onclick="addBet(5)">+ $5</button>
+                    <button id="20" onclick="addBet(20)">+ $20</button>
+                    <button id="50" onclick="addBet(50)">+ $50</button><br>
+                    <button id="5" onclick="substractBet(5)">- $5</button>
+                    <button id="20" onclick="substractBet(20)">- $20</button>
+                    <button id="50" onclick="substractBet(50)">- $50</button>
+                </div>
+            </div>
         </div>
-        
-        <div class="img-container">
-            <div id="player-cards"></div>
-        </div>
-
-        <div>
-            <button onclick="initGame()" id="startGame">Start Game</button>
-            <!-- <button onclick="reset()" id="startGame">New Game</button> -->
-        </div>
-
-        <div class="player-choice">
-            <button onclick="hit()" id="startGame">Hit</button>
-            <button onclick="stand()" id="startGame">Stand</button>
-        </div>
-        
+        <script src="script2.js"></script>
         <script src="script.js"></script>
     </body>
 </html>
