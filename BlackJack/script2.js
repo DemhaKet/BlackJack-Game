@@ -1,3 +1,5 @@
+// Most function names are self-explanatory, and so then is their purpose and logic, hence the lack of explanatory comments
+
 let playerMoney = 0
 let totalBet = 0
 let win = true
@@ -42,7 +44,7 @@ function depositMoney() {
     currentBalanceText.innerText = `Current Balance: $${playerMoney}`
 }
 
-// This function retrieves the boolean value of win and tie and uses it to determine what the player's money should be
+// This function retrieves the boolean value of win and tie (from the main script) and uses it to determine what the player's money should be
 function afterGameMoney() {
     if (win === true && tie === false) { // In case of Win
         playerMoney += (totalBet * 2)
